@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>
+        Teaching Behavior       
+    </title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<br>
+<br>
+<style>
+img { max-width: 100%; }
+.button {
+  border: solid;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: #ffffff;
+}
+
+.updatebutton {
+  border: solid;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: #555555;
+  color: white;
+}
+
+.exportbutton{
+  border: solid;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: #6EAAE1;
+}
+
+</style>
+</head>
+<body>
+<h1>Teaching Behavior</h1>
+<canvas id="myChart" style="width:100%;max-width:1000px"></canvas>
+<br>
+<br>
+<input class="updatebutton" type="button" id="Update" value="Update" onclick="update()"/>
+<br>
+<p style="font-size:30px">Practice Organization</p> 
+<input class="button" type="button" id="beh1" value="1. Isolated technical skill practice" onclick="beh1()"/>
+<input class="button" type="button" id="beh2" value="2. Game Representative Skill" onclick="beh2()"/>
+<input class="button" type="button" id="beh3" value="3. Modified game" onclick="beh3()"/>
+<input class="button" type="button" id="beh4" value="4. Small sided game" onclick="beh4()"/>
+<input class="button" type="button" id="beh5" value="5. Regular play" onclick="beh5()"/>
+<br>
+<br>
+<input class="button" type="button" id="beh6" value="6. Repetitive task" onclick="beh6()"/>
+<input class="button" type="button" id="beh7" value="7. Room for variability" onclick="beh7()"/>
+<input class="button" type="button" id="beh8" value="8. Infusion of space variability" onclick="beh8()"/>
+<input class="button" type="button" id="beh9" value="9. Infusion of player variability" onclick="beh9()"/>
+<br>
+<br>
+<input class="button" type="button" id="beh10" value="10. Infusion of equipment variability" onclick="beh10()"/>
+<br>
+<p style="font-size:30px">Instruction</p>
+<input class="button" type="button" id="beh11" value="11. Prescriptive instruction" onclick="beh11()"/>
+<input class="button" type="button" id="beh12" value="12. Use of analogy" onclick="beh12()"/>
+<input class="button" type="button" id="beh13" value="13. Movement forms" onclick="beh13()"/>
+<input class="button" type="button" id="beh14" value="14. Movement outcomes/effects" onclick="beh14()"/><br>
+<input class="button" type="button" id="beh15" value="15. Oral promotion of variability" onclick="beh15()"/>
+<br>
+<p style="font-size:30px">Feedback</p>
+<input class="button" type="button" id="beh16" value="16. Prescriptive feedback" onclick="beh16()"/><br>
+<input class="button" type="button" id="beh17" value="17. Use of analogy" onclick="beh17()"/>
+<input class="button" type="button" id="beh18" value="18. Movement forms" onclick="beh18()"/>
+<input class="button" type="button" id="beh19" value="19. Movement outcomes/effects" onclick="beh19()"/>
+<input class="button" type="button" id="beh20" value="20. Feedback on variability" onclick="beh20()"/>
+<br>
+<br>
+<br>
+<input class="exportbutton" type="button" id="Export Data" value="Export Data" onclick="download_csv_file()"/>
+<br>    
+<br>
+
+
+
+<br>
+</body>
+
+<script>
+    if(screen.availHeight > screen.availWidth){
+    alert("Please use Landscape!");
+}
+    
+var beh1_state = 0
+var beh2_state = 0
+var beh3_state = 0
+var beh4_state = 0
+var beh5_state = 0
+var beh6_state = 0
+var beh7_state = 0
+var beh8_state = 0
+var beh9_state = 0
+var beh10_state = 0
+var beh11_state = 0
+var beh12_state = 0
+var beh13_state = 0
+var beh14_state = 0
+var beh15_state = 0
+var beh16_state = 0
+var beh17_state = 0
+var beh18_state = 0
+var beh19_state = 0
+var beh20_state = 0
+
+
+var timeArray = []
+var beh1_stateArray = []
+var beh2_stateArray = []
+var beh3_stateArray = []
+var beh4_stateArray = []
+var beh5_stateArray = []
+var beh6_stateArray = []
+var beh7_stateArray = []
+var beh8_stateArray = []
+var beh9_stateArray = []
+var beh10_stateArray = []
+var beh11_stateArray = []
+var beh12_stateArray = []
+var beh13_stateArray = []
+var beh14_stateArray = []
+var beh15_stateArray = []
+var beh16_stateArray = []
+var beh17_stateArray = []
+var beh18_stateArray = []
+var beh19_stateArray = []
+var beh20_stateArray = []
+
+var beh1Total =0
+var beh2Total =0
+var beh3Total =0
+var beh4Total =0
+var beh5Total =0
+var beh6Total =0
+var beh7Total =0
+var beh8Total =0
+var beh9Total =0
+var beh10Total =0
+var beh11Total =0
+var beh12Total =0
+var beh13Total =0
+var beh14Total =0
+var beh15Total =0
+var beh16Total =0
+var beh17Total =0
+var beh18Total =0
+var beh19Total =0
+var beh20Total =0
+
+function beh1(){
+beh1_state=beh1_state+1
+if (beh1_state%2 == 1){
+    document.getElementById("beh1").style.background="yellow"
+    }
+else document.getElementById("beh1").style.background="white"
+    }
+
+function beh2(){
+beh2_state=beh2_state+1
+if (beh2_state%2 == 1){
+    document.getElementById("beh2").style.background="yellow"
+}
+else document.getElementById("beh2").style.background="white"
+    }
+
+function beh3(){
+beh3_state=beh3_state+1
+if (beh3_state%2 == 1){
+    document.getElementById("beh3").style.background="yellow"
+}
+else document.getElementById("beh3").style.background="white"
+    }
+
+function beh4(){
+beh4_state=beh4_state+1
+if (beh4_state%2 == 1){
+    document.getElementById("beh4").style.background="yellow"
+}
+else document.getElementById("beh4").style.background="white"
+    }
+
+function beh5(){
+beh5_state=beh5_state+1
+if (beh5_state%2 == 1){
+    document.getElementById("beh5").style.background="yellow"
+}
+else document.getElementById("beh5").style.background="white"
+    }
+
+function beh6(){
+beh6_state=beh6_state+1
+if (beh6_state%2 == 1){
+    document.getElementById("beh6").style.background="yellow"
+}
+else document.getElementById("beh6").style.background="white"
+    }
+
+function beh7(){
+beh7_state=beh7_state+1
+if (beh7_state%2 == 1){
+    document.getElementById("beh7").style.background="yellow"
+}
+else document.getElementById("beh7").style.background="white"
+    }
+
+function beh8(){
+beh8_state=beh8_state+1
+if (beh8_state%2 == 1){
+    document.getElementById("beh8").style.background="yellow"
+}
+else document.getElementById("beh8").style.background="white"
+    }
+
+function beh9(){
+beh9_state=beh9_state+1
+if (beh9_state%2 == 1){
+    document.getElementById("beh9").style.background="yellow"
+}
+else document.getElementById("beh9").style.background="white"
+    }
+
+function beh10(){
+beh10_state=beh10_state+1
+if (beh10_state%2 == 1){
+    document.getElementById("beh10").style.background="yellow"
+}
+else document.getElementById("beh10").style.background="white"
+    }
+
+function beh11(){
+beh11_state=beh11_state+1
+if (beh11_state%2 == 1){
+    document.getElementById("beh11").style.background="yellow"
+}
+else document.getElementById("beh11").style.background="white"
+    }
+
+
+function beh12(){
+beh12_state=beh12_state+1
+if (beh12_state%2 == 1){
+    document.getElementById("beh12").style.background="yellow"
+}
+else document.getElementById("beh12").style.background="white"
+    }
+
+function beh13(){
+beh13_state=beh13_state+1
+if (beh13_state%2 == 1){
+    document.getElementById("beh13").style.background="yellow"
+}
+else document.getElementById("beh13").style.background="white"
+    }
+
+function beh14(){
+beh14_state=beh14_state+1
+if (beh14_state%2 == 1){
+    document.getElementById("beh14").style.background="yellow"
+}
+else document.getElementById("beh14").style.background="white"
+    }
+
+function beh15(){
+beh15_state=beh15_state+1
+if (beh15_state%2 == 1){
+    document.getElementById("beh15").style.background="yellow"
+}
+else document.getElementById("beh15").style.background="white"
+    }
+
+function beh16(){
+beh16_state=beh16_state+1
+if (beh16_state%2 == 1){
+    document.getElementById("beh16").style.background="yellow"
+}
+else document.getElementById("beh16").style.background="white"
+    }
+
+function beh17(){
+beh17_state=beh17_state+1
+if (beh17_state%2 == 1){
+    document.getElementById("beh17").style.background="yellow"
+}
+else document.getElementById("beh17").style.background="white"
+    }
+
+function beh18(){
+beh18_state=beh18_state+1
+if (beh18_state%2 == 1){
+    document.getElementById("beh18").style.background="yellow"
+}
+else document.getElementById("beh18").style.background="white"
+    }
+
+function beh19(){
+beh19_state=beh19_state+1
+if (beh19_state%2 == 1){
+    document.getElementById("beh19").style.background="yellow"
+}
+else document.getElementById("beh19").style.background="white"
+    }
+
+function beh20(){
+beh20_state=beh20_state+1
+if (beh20_state%2 == 1){
+    document.getElementById("beh20").style.background="yellow"
+}
+else document.getElementById("beh20").style.background="white"
+    }
+
+
+function update(){    
+document.getElementById("beh1").style.background="white";
+document.getElementById("beh2").style.background="white";
+document.getElementById("beh3").style.background="white";
+document.getElementById("beh4").style.background="white";
+document.getElementById("beh5").style.background="white";
+document.getElementById("beh6").style.background="white";
+document.getElementById("beh7").style.background="white";
+document.getElementById("beh8").style.background="white";
+document.getElementById("beh9").style.background="white";
+document.getElementById("beh10").style.background="white";
+document.getElementById("beh11").style.background="white";
+document.getElementById("beh12").style.background="white";
+document.getElementById("beh13").style.background="white";
+document.getElementById("beh14").style.background="white";
+document.getElementById("beh15").style.background="white";
+document.getElementById("beh16").style.background="white";
+document.getElementById("beh17").style.background="white";
+document.getElementById("beh18").style.background="white";
+document.getElementById("beh19").style.background="white";
+document.getElementById("beh20").style.background="white";
+
+t = new Date().toLocaleTimeString()
+timeArray.push(t);
+beh1_stateArray.push(beh1_state%2);
+beh1_state=0;
+beh2_stateArray.push(beh2_state%2);
+beh2_state=0;
+beh3_stateArray.push(beh3_state%2);
+beh3_state=0;
+beh4_stateArray.push(beh4_state%2);
+beh4_state=0;
+beh5_stateArray.push(beh5_state%2);
+beh5_state=0;
+beh6_stateArray.push(beh6_state%2);
+beh6_state=0;
+beh7_stateArray.push(beh7_state%2);
+beh7_state=0;
+beh8_stateArray.push(beh8_state%2);
+beh8_state=0;
+beh9_stateArray.push(beh9_state%2);
+beh9_state=0;
+beh10_stateArray.push(beh10_state%2);
+beh10_state=0;
+beh11_stateArray.push(beh11_state%2);
+beh11_state=0;
+beh12_stateArray.push(beh12_state%2);
+beh12_state=0;
+beh13_stateArray.push(beh13_state%2);
+beh13_state=0;
+beh14_stateArray.push(beh14_state%2);
+beh14_state=0;
+beh15_stateArray.push(beh15_state%2);
+beh15_state=0;
+beh16_stateArray.push(beh16_state%2);
+beh16_state=0;
+beh17_stateArray.push(beh17_state%2);
+beh17_state=0;
+beh18_stateArray.push(beh18_state%2);
+beh18_state=0;
+beh19_stateArray.push(beh19_state%2);
+beh19_state=0;
+beh20_stateArray.push(beh20_state%2);
+beh20_state=0;
+
+//document.getElementById("time").innerHTML=timeArray;
+csvFileData=[timeArray,beh1_stateArray,beh2_stateArray,beh3_stateArray,
+beh4_stateArray,
+beh5_stateArray,
+beh6_stateArray,
+beh7_stateArray,
+beh8_stateArray,
+beh9_stateArray,
+beh10_stateArray,
+beh11_stateArray,
+beh12_stateArray,
+beh13_stateArray,
+beh14_stateArray,
+beh15_stateArray,
+beh16_stateArray,
+beh17_stateArray,
+beh18_stateArray,
+beh19_stateArray,
+beh20_stateArray
+];
+
+beh1Total = beh1_stateArray.reduce((x, y) => x + y);
+beh2Total = beh2_stateArray.reduce((x, y) => x + y);
+beh3Total = beh3_stateArray.reduce((x, y) => x + y);
+beh4Total = beh4_stateArray.reduce((x, y) => x + y);
+beh5Total = beh5_stateArray.reduce((x, y) => x + y);
+beh6Total = beh6_stateArray.reduce((x, y) => x + y);
+beh7Total = beh7_stateArray.reduce((x, y) => x + y);
+beh8Total = beh8_stateArray.reduce((x, y) => x + y);
+beh9Total = beh9_stateArray.reduce((x, y) => x + y);
+beh10Total = beh10_stateArray.reduce((x, y) => x + y);
+beh11Total = beh11_stateArray.reduce((x, y) => x + y);
+beh12Total = beh12_stateArray.reduce((x, y) => x + y);
+beh13Total = beh13_stateArray.reduce((x, y) => x + y);
+beh14Total = beh14_stateArray.reduce((x, y) => x + y);
+beh15Total = beh15_stateArray.reduce((x, y) => x + y);
+beh16Total = beh16_stateArray.reduce((x, y) => x + y);
+beh17Total = beh17_stateArray.reduce((x, y) => x + y);
+beh18Total = beh18_stateArray.reduce((x, y) => x + y);
+beh19Total = beh19_stateArray.reduce((x, y) => x + y);
+beh20Total = beh20_stateArray.reduce((x, y) => x + y);
+
+csvFileData=transpose(csvFileData)
+
+charting();
+}
+
+
+function transpose(matrix) {
+  return matrix[0].map((col, i) => matrix.map(row => row[i]));
+}
+
+
+
+function download_csv_file() {
+    update()
+
+    //define the heading for each row of the data
+    var csv = 'TimeStamp,Beh1,Beh2,Beh3,Beh4,Beh5,Beh6,Beh7,Beh8,Beh9,Beh10,Beh11,Beh12,Beh13,Beh14,Beh15,Beh16,Beh17,Beh18,Beh19,Beh20\n';
+    
+    //merge the data with CSV
+    csvFileData.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+    });
+ 
+    //display the created CSV data on the web browser 
+    //document.write(csv);
+
+   
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    
+    //provide the name for the CSV file to be downloaded
+    hiddenElement.download = 'Teaching Observation.csv';
+    hiddenElement.click();
+}
+
+
+function charting(){
+var xValues = ["Behavior 1", "Behavior 2", "Behavior 3", "Behavior 4", "Behavior 5", 
+"Behavior 6", "Behavior 7", "Behavior 8", "Behavior 9", "Behavior 10", "Behavior 11", 
+"Behavior 12", "Behavior 13", "Behavior 14", "Behavior 15", "Behavior 16", "Behavior 17", 
+"Behavior 18", "Behavior 19", "Behavior 20"];
+var yValues = [beh1Total,beh2Total,beh3Total,beh4Total,beh5Total,beh6Total, beh7Total,beh7Total,beh9Total,beh10Total,beh11Total,beh12Total, beh13Total,beh14Total,beh15Total,beh16Total,beh17Total,beh18Total,beh19Total,beh20Total];
+var barColors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Teaching Behavior"
+    }
+  }
+})
+
+}
+
+</script>
+</html>

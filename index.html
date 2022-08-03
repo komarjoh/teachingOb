@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>
+		Teaching Behavior		
+	</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<style>
+img { max-width: 100%; }
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.button1 {
+  background-color: blue;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button2 {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+
+</style>
+	
+</head>
+<body>
+<h1>Teaching Behavior</h1>
+
+<button class="button1" id ="startBtn" onclick="startBtn()">Start</button>
+
+<button class="button2" id ="resetBtn" onclick="resetBtn()">Reset</button>
+<br>	
+<br>
+
+<p> Notes</p> 
+
+<textarea type="feedback" cols="40" rows = "5" id="fb"></textarea>
+<br>
+<br>
+<button class="button" id ="beh1" onclick="beha1()">beh1</button>
+<button class="button" id ="beh2" onclick="beha2()">beh2</button>
+
+<br>	
+<br>
+<p id="reset"></p>
+<p id="b0"></p>
+<br>
+
+
+<button id ="downloadBtn" onclick="download_csv_file()">Download</button>
+
+</body>
+
+
+<script>
+
+//now = new Date().getTime();
+//document.getElementById("b0").innerHTML=now
+document.getElementById("beh1").disabled = true;
+document.getElementById("beh2").disabled = true;
+var timeArray = [];
+var stateArray = [];
+var commentsArray =[];
+
+var time = "";
+var state= "";
+var comments = "";
+
+function resetBtn(){
+  if (confirm("Warning: You are about to delete all current records!")) {
+    window.location.reload();
+  } 
+}
+
+
+
+function startBtn(){
+
+
+	text = ""
+	t = new Date().toLocaleTimeString()
+	timeArray.push(t);  
+	stateArray.push("start");  
+	commentsArray.push(document.getElementById("fb").value);
+	time = t;
+  state= "start";
+  comments = document.getElementById("fb").value;
+document.getElementById("b0").innerHTML = ""; 
+document.getElementById("reset").innerHTML = ""; 
+document.getElementById("reset").innerHTML = time + " " + state + " " + comments + "<br>";
+document.getElementById("fb").value="";
+document.getElementById("startBtn").disabled = true; 
+document.getElementById("startBtn").style.color = "red"; 		
+document.getElementById("beh1").disabled = false;
+document.getElementById("beh2").disabled = false;
+}
+
+function beha1(){
+	t = new Date().toLocaleTimeString()
+	timeArray.push(t);
+	stateArray.push("beh1");  
+	commentsArray.push(document.getElementById("fb").value);  
+
+	time = t;
+  state= "beh1";
+  comments = document.getElementById("fb").value;
+
+
+	update();
+}
+
+function beha2(){
+	t = new Date().toLocaleTimeString()
+	timeArray.push(t);
+stateArray.push("beh2");    
+	commentsArray.push(document.getElementById("fb").value);
+
+	time = t;
+  state= "beh2";
+  comments = document.getElementById("fb").value;
+
+
+	update();
+};
+	
+var text =""	
+function update(){
+text += time + " " + state + " " + comments + "<br><br>";
+document.getElementById("b0").innerHTML = text; 
+document.getElementById("fb").value="";
+csvFileData=[timeArray,stateArray,commentsArray]
+
+csvFileData=transpose(csvFileData)
+
+console.log(csvFileData)
+}
+
+function transpose(matrix) {
+  return matrix[0].map((col, i) => matrix.map(row => row[i]));
+}
+
+
+
+function download_csv_file() {
+
+    //define the heading for each row of the data
+    var csv = 'Date,Behaviour,Comments\n';
+    
+    //merge the data with CSV
+    csvFileData.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+    });
+ 
+    //display the created CSV data on the web browser 
+    document.write(csv);
+
+   
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    
+    //provide the name for the CSV file to be downloaded
+    hiddenElement.download = 'Teaching Observation.csv';
+    hiddenElement.click();
+}
+
+</script>
+
+</html>
